@@ -1,8 +1,11 @@
 const cheerio = require("cheerio");
 const request = require("request-promise");
+let fs = require('fs');
+
+let filename = 'alquileres-prueba-1.csv';
 
 async function scrap() {
-
+    console.time();
     for (let i = 1; i < 5; i++) {
 
         let $ = await request({
@@ -33,9 +36,10 @@ async function scrap() {
                 },
                 inmobiliaria
             };
-            console.log(obj);
+            fs.appendFileSync(filename, `"${obj.direccion}","${obj.barrio}", "${obj.precio}", "${obj.expensas}", "${obj.detalles.ambientes}", "${obj.detalles.m2}", "${obj.detalles.banios}", "${obj.detalles.inmobiliaria}",\n`);
         });
     }
+    console.timeEnd();
 
 }
 
