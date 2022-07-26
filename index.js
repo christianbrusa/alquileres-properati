@@ -36,7 +36,7 @@ async function scrap() {
                 },
                 inmobiliaria
             };
-            fs.appendFileSync(filename, `"${obj.direccion}","${obj.barrio}", "${obj.precio}", "${obj.expensas}", "${obj.detalles.ambientes}", "${obj.detalles.m2}", "${obj.detalles.banios}", "${obj.detalles.inmobiliaria}",\n`);
+            fs.appendFileSync(filename, `"${obj.direccion}","${obj.barrio}", "${obj.precio}", "${obj.expensas}", "${obj.detalles.ambientes}", "${obj.detalles.m2}", "${obj.detalles.banios}", "${obj.inmobiliaria}",\n`);
         });
     }
     console.timeEnd();
