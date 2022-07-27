@@ -28,7 +28,7 @@ async function scrap() {
             let obj = {
                 direccion: titulo.split("Departamento en alquiler en ")[1],
                 barrio: barrio.split(",")[0],
-                precio: precio,
+                precio: precio.includes("USD") ? "USD" : precio,
                 expensas: expensas !== "" ? expensas : "No tiene",
                 detalles: {
                     ambientes: ambientes !== "" ? ambientes.split(" ambientes")[0] : "No detalla",
@@ -38,6 +38,7 @@ async function scrap() {
                 inmobiliaria,
                 link: "https://www.properati.com.ar" + link.attr('href')
             };
+            obj.precio != "USD" &&
             fs.appendFileSync(filename, `${obj.direccion}, ${obj.barrio}, ${obj.precio}, ${obj.expensas}, ${obj.detalles.ambientes}, ${obj.detalles.m2}, ${obj.detalles.banios}, ${obj.inmobiliaria}, ${obj.link},\n`);
         });
     }
