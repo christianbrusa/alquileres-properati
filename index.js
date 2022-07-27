@@ -23,6 +23,7 @@ async function scrap() {
             let banios = ($(el).find(".gxrAFy > .jGXOiG > .iktDEj > .kbmWJE > span:nth-child(2)").text());
             let ambientes = ($(el).find(".gxrAFy > .jGXOiG > .iktDEj > .kbmWJE > span:first-child").text());
             let inmobiliaria = ($(el).find(".gxrAFy > .jGXOiG > .iktDEj > .yInXk > span:first-child").text());
+            let link = ($(el).find(".gxrAFy > a"));
 
             let obj = {
                 direccion: titulo.split("Departamento en alquiler en ")[1],
@@ -34,9 +35,10 @@ async function scrap() {
                     m2,
                     banios: banios[0]
                 },
-                inmobiliaria
+                inmobiliaria,
+                link: "https://www.properati.com.ar" + link.attr('href')
             };
-            fs.appendFileSync(filename, `"${obj.direccion}","${obj.barrio}", "${obj.precio}", "${obj.expensas}", "${obj.detalles.ambientes}", "${obj.detalles.m2}", "${obj.detalles.banios}", "${obj.inmobiliaria}",\n`);
+            fs.appendFileSync(filename, `${obj.direccion}, ${obj.barrio}, ${obj.precio}, ${obj.expensas}, ${obj.detalles.ambientes}, ${obj.detalles.m2}, ${obj.detalles.banios}, ${obj.inmobiliaria}, ${obj.link},\n`);
         });
     }
     console.timeEnd();
