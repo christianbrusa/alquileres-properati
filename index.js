@@ -27,8 +27,8 @@ async function scrap() {
 
             let obj = {
                 direccion: titulo.split("Departamento en alquiler en ")[1],
-                barrio,
-                precio,
+                barrio: barrio.split(",")[0],
+                precio: precio,
                 expensas: expensas !== "" ? expensas : "No tiene",
                 detalles: {
                     ambientes: ambientes !== "" ? ambientes.split(" ambientes")[0] : "No detalla",
