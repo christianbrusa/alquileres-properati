@@ -1,6 +1,7 @@
 const cheerio = require("cheerio");
 const request = require("request-promise");
 let fs = require('fs');
+const _ = require("lodash");
 
 let filename = 'alquileres-prueba-1.csv';
 
@@ -26,8 +27,8 @@ async function scrap() {
             let link = ($(el).find(".gxrAFy > a"));
 
             let obj = {
-                direccion: titulo.split("Departamento en alquiler en ")[1],
-                barrio: barrio.split(",")[0],
+                direccion: _.deburr(titulo.split("Departamento en alquiler en ")[1]),
+                barrio: _.deburr(barrio.split(",")[0]),
                 precio: precio.includes("USD") ? "USD" : precio,
                 expensas: expensas !== "" ? expensas : "No tiene",
                 detalles: {
@@ -35,7 +36,7 @@ async function scrap() {
                     m2,
                     banios: banios[0]
                 },
-                inmobiliaria,
+                inmobiliaria: _.deburr(inmobiliaria),
                 link: "https://www.properati.com.ar" + link.attr('href')
             };
             obj.precio != "USD" &&
