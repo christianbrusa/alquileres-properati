@@ -7,7 +7,7 @@ let filename = 'alquileres-prueba-1.csv';
 
 async function scrap() {
     console.time();
-    for (let i = 1; i < 5; i++) {
+    for (let i = 1; i < 30; i++) {
 
         let $ = await request({
             url: `https://www.properati.com.ar/s/capital-federal/departamento/alquiler?page=${i}`,
@@ -29,8 +29,8 @@ async function scrap() {
             let obj = {
                 direccion: _.deburr(titulo.split("Departamento en alquiler en ")[1]),
                 barrio: _.deburr(barrio.split(",")[0]),
-                precio: precio.includes("USD") ? "USD" : precio,
-                expensas: expensas !== "" ? expensas : "No tiene",
+                precio: precio.includes("USD") ? "USD" : precio.split("$")[1],
+                expensas: expensas !== "" ? expensas.split("Expensas")[0].split("$")[1] : "No tiene",
                 detalles: {
                     ambientes: ambientes !== "" ? ambientes.split(" ambientes")[0] : "No detalla",
                     m2,
@@ -39,8 +39,16 @@ async function scrap() {
                 inmobiliaria: _.deburr(inmobiliaria),
                 link: "https://www.properati.com.ar" + link.attr('href')
             };
-            obj.precio != "USD" &&
-            fs.appendFileSync(filename, `${obj.direccion}, ${obj.barrio}, ${obj.precio}, ${obj.expensas}, ${obj.detalles.ambientes}, ${obj.detalles.m2}, ${obj.detalles.banios}, ${obj.inmobiliaria}, ${obj.link},\n`);
+
+            let precioFormateado = Number(obj.precio).toFixed(3);
+            let expensasFormateada = Number(obj.expensas).toFixed(3);
+
+            let limiteAPagar = 70.000;
+            let precioTotal = (parseInt(precioFormateado) + parseInt(expensasFormateada)).toFixed(3);
+
+            obj.precio != "USD" && limiteAPagar >= precioTotal &&
+            console.log(obj)
+            //fs.appendFileSync(filename, `${obj.direccion}, ${obj.barrio}, ${obj.precio}, ${obj.expensas}, ${obj.detalles.ambientes}, ${obj.detalles.m2}, ${obj.detalles.banios}, ${obj.inmobiliaria}, ${obj.link},\n`);
         });
     }
     console.timeEnd();
