@@ -29,8 +29,8 @@ async function scrap() {
             let obj = {
                 direccion: _.deburr(titulo.split("Departamento en alquiler en ")[1]),
                 barrio: _.deburr(barrio.split(",")[0]),
-                precio: precio.includes("USD") ? "USD" : precio.split("$")[1],
-                expensas: expensas !== "" ? expensas.split("Expensas")[0].split("$")[1] : "No tiene",
+                precio: precio.includes("USD") ? "USD" : (precio.split("$")[1]).trim(),
+                expensas: expensas !== "" ? (expensas.split("Expensas")[0].split("$")[1]).trim() : "No tiene",
                 detalles: {
                     ambientes: ambientes !== "" ? ambientes.split(" ambientes")[0] : "No detalla",
                     m2,
@@ -48,7 +48,7 @@ async function scrap() {
 
             obj.precio != "USD" && limiteAPagar >= precioTotal &&
             console.log(obj)
-            //fs.appendFileSync(filename, `${obj.direccion}, ${obj.barrio}, ${obj.precio}, ${obj.expensas}, ${obj.detalles.ambientes}, ${obj.detalles.m2}, ${obj.detalles.banios}, ${obj.inmobiliaria}, ${obj.link},\n`);
+            fs.appendFileSync(filename, `${obj.direccion}, ${obj.barrio}, ${obj.precio}, ${obj.expensas}, ${obj.detalles.ambientes}, ${obj.detalles.m2}, ${obj.detalles.banios}, ${obj.inmobiliaria}, ${obj.link},\n`);
         });
     }
     console.timeEnd();
